@@ -1,7 +1,7 @@
 # Django_Vue_webblog
 前端Vue，后端Django搭建的后端系统
 
-##版本
+## 版本
 - Django == 2.1.7
 - Vue-cli == 3.0
 
