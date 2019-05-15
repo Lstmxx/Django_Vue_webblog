@@ -1,0 +1,173 @@
+<h1>配置跨域请求</h1>
+<h2>Vue</h2>
+<ul>
+<li>安装axios</li>
+</ul>
+<div class="codehilite"><pre><span></span>npm install axios --save
+</pre></div>
+
+
+<ul>
+<li>在main.js中配置</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kr">import</span> <span class="nx">axios</span> <span class="nx">from</span> <span class="s1">&#39;axios&#39;</span> 
+<span class="err">···</span>
+<span class="nx">Vue</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">axios</span><span class="p">)</span>
+<span class="nx">axios</span><span class="p">.</span><span class="nx">defaults</span><span class="p">.</span><span class="nx">baseURL</span> <span class="o">=</span> <span class="s2">&quot;http://127.0.0.1:8000&quot;</span> <span class="c1">//设置默认跳转地址</span>
+<span class="nx">axios</span><span class="p">.</span><span class="nx">defaults</span><span class="p">.</span><span class="nx">withCredentials</span> <span class="o">=</span> <span class="kc">true</span><span class="c1">//跨域设置</span>
+<span class="nx">Vue</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">$axios</span> <span class="o">=</span> <span class="nx">axios</span> <span class="c1">//引入全局变量</span>
+</pre></div>
+
+
+<h2>Django</h2>
+<ul>
+<li>安装django-cors-headers</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">django</span><span class="o">-</span><span class="n">cors</span><span class="o">-</span><span class="n">headers</span>
+</pre></div>
+
+
+<ul>
+<li>在settings.py中设置</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="err">···</span>
+    <span class="s1">&#39;corsheaders&#39;</span><span class="p">,</span><span class="c1">#跨域</span>
+<span class="p">]</span>
+<span class="err">···</span>
+<span class="n">MIDDLEWARE</span> <span class="o">=</span> <span class="p">[</span>
+
+    <span class="s1">&#39;django.middleware.security.SecurityMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;corsheaders.middleware.CorsMiddleware&#39;</span><span class="p">,</span><span class="c1">#跨域，不要改变到其它位置，因为django的中间层是有顺序执行的</span>
+    <span class="s1">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.csrf.CsrfViewMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.contrib.messages.middleware.MessageMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;django.middleware.clickjacking.XFrameOptionsMiddleware&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;debug_toolbar.middleware.DebugToolbarMiddleware&#39;</span><span class="p">,</span><span class="c1">#debug</span>
+<span class="p">]</span>
+<span class="err">···</span>
+<span class="n">CORS_ALLOW_CREDENTIALS</span> <span class="o">=</span> <span class="bp">True</span> <span class="c1">#跨域允许证书</span>
+
+<span class="n">CORS_ORIGIN_ALLOW_ALL</span> <span class="o">=</span> <span class="bp">True</span> <span class="c1"># 配置允许跨站访问本站的地址</span>
+<span class="n">CORS_ORIGIN_WHITELIST</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;*&#39;</span> <span class="c1">#配置允许发出请求的域名IP</span>
+<span class="p">)</span>
+
+<span class="c1">#允许跨域的方法</span>
+<span class="n">CORS_ALLOW_METHODS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OPTIONS&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PATCH&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PUT&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;VIEW&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1">#允许跨域的请求头</span>
+<span class="n">CORS_ALLOW_HEADERS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s1">&#39;XMLHttpRequest&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;X_FILENAME&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;accept-encoding&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;authorization&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;content-type&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;dnt&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;origin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;user-agent&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;x-csrftoken&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;x-requested-with&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Pragma&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<ul>
+<li>在view.py中引django.views.decorators.csrf.csrf_exempt并在需要对外暴露的函数的上方定义语法糖</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">django.views.decorators.csrf</span> <span class="kn">import</span> <span class="n">csrf_exempt</span>
+<span class="err">···</span>
+<span class="nd">@csrf_exempt</span>
+<span class="k">def</span> <span class="nf">login_or_register</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="err">···</span>
+</pre></div>
+
+
+<h1>数据交互</h1>
+<h2>Vue</h2>
+<ul>
+<li>使用axios来进行数据交互例子Vue发送请求端</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="k">this</span><span class="p">.</span><span class="nx">$axios</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s2">&quot;/login_or_register&quot;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="c1">//data 写成key与value的形式</span>
+            <span class="nx">key</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span>
+          <span class="p">})</span>
+          <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">response</span> <span class="p">=&gt;</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">);</span>
+            <span class="c1">//response处理</span>
+          <span class="p">})</span>
+          <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="p">=&gt;</span> <span class="p">{</span>
+              <span class="c1">//异常处理</span>
+          <span class="p">})</span>
+</pre></div>
+
+
+<h2>Django</h2>
+<ul>
+<li>使用django进行数据接收，先在view.py定义函数login_or_register来实现简单的登录验证</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="nd">@csrf_exempt</span>
+<span class="k">def</span> <span class="nf">login_or_register</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">md5</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">()</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">rsp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rsp_d</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">,</span><span class="n">strict</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;usn&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">values_list</span><span class="p">()</span>
+        <span class="n">res_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="n">md5</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;pwd&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf8&quot;</span><span class="p">))</span>
+        <span class="n">al_pwd</span> <span class="o">=</span> <span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">res_len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">rsp_d</span><span class="p">[</span><span class="s1">&#39;resluts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;还没注册兄dei&quot;</span>
+                <span class="n">rsp_d</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>
+                <span class="n">rsp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rsp_d</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">rsp_d</span><span class="p">[</span><span class="s1">&#39;resluts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;注册成功&quot;</span>
+                <span class="n">rsp_d</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>
+                <span class="n">rsp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rsp_d</span><span class="p">)</span>
+                <span class="n">whereDict</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;name&quot;</span><span class="p">:</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;usn&#39;</span><span class="p">],</span>
+                <span class="s2">&quot;pwd&quot;</span><span class="p">:</span><span class="n">al_pwd</span>
+                <span class="p">}</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">To_DB</span><span class="p">(</span><span class="n">obj</span> <span class="o">=</span> <span class="n">User</span><span class="p">,</span><span class="n">op</span> <span class="o">=</span> <span class="s2">&quot;insert&quot;</span><span class="p">,</span><span class="n">wheredict</span> <span class="o">=</span> <span class="n">whereDict</span><span class="p">,</span><span class="n">selectdict</span><span class="o">=</span><span class="p">{})</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pwd</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">pwd</span> <span class="o">==</span> <span class="n">al_pwd</span><span class="p">:</span>
+                    <span class="n">rsp_d</span><span class="p">[</span><span class="s1">&#39;resluts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;登录成功&quot;</span>
+                    <span class="n">rsp_d</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;2&#39;</span>
+                    <span class="n">rsp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rsp_d</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">rsp_d</span><span class="p">[</span><span class="s1">&#39;resluts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;账号已存在&quot;</span>
+                    <span class="n">rsp_d</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;3&#39;</span>
+                    <span class="n">rsp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rsp_d</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">rsp</span><span class="p">)</span>
+        <span class="n">rsp</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">rsp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">rsp</span><span class="p">)</span>
+</pre></div>
+
+
+<ul>
+<li>在urls.py中暴露url接口</li>
+</ul>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">blog_backend</span> <span class="kn">import</span> <span class="n">views</span>
+<span class="o">...</span>
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="o">...</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">&#39;login_or_register&#39;</span><span class="p">,</span><span class="n">views</span><span class="o">.</span><span class="n">login_or_register</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
