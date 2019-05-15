@@ -92,11 +92,11 @@ DATABASES = {
                 #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',#驱动
-        'NAME':'myblog',#库名
-        'USER':'root',#用户名
-        'PASSWORD':'123456',#密码
-        'HOST':'localhost',#服务器ip地址
-        'PORT':'3306',#端口
+        'NAME':'',#库名
+        'USER':'',#用户名
+        'PASSWORD':'',#密码
+        'HOST':'',#数据库服务器ip地址
+        'PORT':'',#端口
     }
 }
 
